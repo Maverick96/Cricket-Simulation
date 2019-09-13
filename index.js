@@ -11,18 +11,6 @@ const runsRequired = config.runsRequired;
 const oversLeft = config.oversLeft;
 
 const total = 100;
-console.log("TOtal weight ", total);
-
-function getRuns(weightList, randomValue) {
-    for (let i = 0; i < weightList.length; i++) {
-        if (randomValue < weightList[i].weight) {
-            return weightList[i].value;
-        }
-        randomValue -= weightList[i].weight;
-    }
-}
-
-
 
 function printResult(win, wickets, runs, balls, team, playerStats) {
     if (win) {

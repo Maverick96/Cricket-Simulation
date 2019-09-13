@@ -1,5 +1,4 @@
 function getCurrentStrike(currentStrike, runs, balls) {
-    console.log(typeof currentStrike === 'number', typeof runs === 'number', balls === 'number')
     if (typeof currentStrike === 'number' && typeof runs === 'number' && typeof balls === 'number') {
 
         if (runs > 6) {

@@ -1,6 +1,5 @@
 const getCurrentStrike = require('../getCurrentStrike');
 const chai = require('chai');
-const sinon = require('sinon')
 const sinon_chai = require('sinon-chai');
 
 chai.use(sinon_chai);
