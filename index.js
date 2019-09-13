@@ -1,7 +1,7 @@
 const Player = require('./player');
 const config = require('./config');
 const weights = config.weights;
-
+const team = config.teamName;
 const playerNames = config.playerNames;
 // setting up env
 const wickets = config.wicketsLeft;
@@ -33,6 +33,19 @@ function getCurrentStrike(currentStrike, runs, balls) {
     return currentStrike;
 }
 
+function printResult(win, wickets, runs, balls, team, playerStats) {
+    if (win) {
+        console.log(`${team} won by ${wickets} wickets with ${balls} balls remaining`)
+    } else {
+        console.log(`${team} lost by ${runs} runs`);
+    }
+
+    // print player stats
+    playerStats.map(player => {
+        console.log(`${player.name} - ${player.runs}${player.notOut ? '* ' : ' '} (${player.ballsFaced} balls)`);
+    });
+}
+
 function startSimulation(wickets, runsRequired, overs, weights) {
 
     let currentStrike = 0, currentPlayers = [];
@@ -47,8 +60,8 @@ function startSimulation(wickets, runsRequired, overs, weights) {
     while (wickets && balls) {
 
         if (balls % 6 === 0) {
+            console.log(`${overs} over(s) left. ${runsRequired} runs to win`)
             overs--;
-            console.log(`${overs} left. ${runsRequired} runs to win`)
         }
 
         randomValue = Math.random() * total;
@@ -87,7 +100,8 @@ function startSimulation(wickets, runsRequired, overs, weights) {
         allPlayer[player.index] = player;
     });
 
-    console.log(`${win}`);
+    printResult(win, wickets, runsRequired, balls, team, allPlayer);
+
 }
 
 startSimulation(wickets, runsRequired, oversLeft, weights);
