@@ -1,6 +1,6 @@
 module.exports = {
     wicketsLeft: 3,
-    runsRequired: 50,
+    runsRequired: 40,
     oversLeft: 4,
     playerNames: ['Kirat Boli', 'N.S Nodhi', 'R Rumrah', 'Shashi Hendra'],
     weights: {
@@ -129,5 +129,6 @@ module.exports = {
             weight: 10,
             value: -1
         }]
-    }
+    },
+    teamName: 'Bengaluru'
 };
