@@ -1,9 +1,11 @@
 const Player = require('./player');
 const config = require('./config');
+const getCurrentStrike = require('./getCurrentStrike');
+
+// setting up env
 const weights = config.weights;
 const team = config.teamName;
 const playerNames = config.playerNames;
-// setting up env
 const wickets = config.wicketsLeft;
 const runsRequired = config.runsRequired;
 const oversLeft = config.oversLeft;
@@ -20,18 +22,7 @@ function getRuns(weightList, randomValue) {
     }
 }
 
-function getCurrentStrike(currentStrike, runs, balls) {
-    // rotate strike if runs are odd
-    if (runs % 2 === 1) {
-        currentStrike = currentStrike % 2 === 0 ? 1 : 0;
-    }
 
-    // rotate strike if over is completed
-    if (balls % 6 === 0) {
-        currentStrike = currentStrike % 2 === 0 ? 1 : 0;
-    }
-    return currentStrike;
-}
 
 function printResult(win, wickets, runs, balls, team, playerStats) {
     if (win) {
