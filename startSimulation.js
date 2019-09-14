@@ -1,7 +1,6 @@
 const Player = require('./player');
 const getCurrentStrike = require('./getCurrentStrike');
 const getRuns = require('./getRuns');
-const printResult = require('./print');
 
 function startSimulation(wickets, runsRequired, overs, weights, totalWeight, playerNames) {
     const matchCommentary = [];
@@ -21,7 +20,14 @@ function startSimulation(wickets, runsRequired, overs, weights, totalWeight, pla
             overs--;
         }
         randomValue = Math.random() * totalWeight;
-        runs = getRuns(currentPlayers[currentStrike].weights, randomValue);
+        try {
+            runs = getRuns(currentPlayers[currentStrike].weights, randomValue);
+        }
+        catch (err) {
+            console.error(err);
+            console.log("Unable to continue match simulation, try again");
+            process.exit();
+        }
         balls--;
         currentPlayers[currentStrike].ballsFaced += 1;
         // rotate strike for odd runs
@@ -49,8 +55,15 @@ function startSimulation(wickets, runsRequired, overs, weights, totalWeight, pla
             win = true;
             break;
         }
-        // who will be facing the next ball
-        currentStrike = getCurrentStrike(currentStrike, runs, balls);
+        try {
+            // who will be facing the next ball
+            currentStrike = getCurrentStrike(currentStrike, runs, balls);
+        }
+        catch (err) {
+            console.error(err);
+            console.log("Unable to continue match simulation, try again");
+            process.exit();
+        }
 
     }
 
