@@ -1,6 +1,8 @@
 const Player = require('./player');
 const config = require('./config');
 const getCurrentStrike = require('./getCurrentStrike');
+const getRuns = require('./getRuns');
+const printResult = require('./print');
 
 // setting up env
 const weights = config.weights;
@@ -10,40 +12,26 @@ const wickets = config.wicketsLeft;
 const runsRequired = config.runsRequired;
 const oversLeft = config.oversLeft;
 
-const total = 100;
-
-function printResult(win, wickets, runs, balls, team, playerStats) {
-    if (win) {
-        console.log(`${team} won by ${wickets} wickets with ${balls} balls remaining`)
-    } else {
-        console.log(`${team} lost by ${runs} runs`);
-    }
-
-    // print player stats
-    playerStats.map(player => {
-        console.log(`${player.name} - ${player.runs}${player.notOut ? '* ' : ' '} (${player.ballsFaced} balls)`);
-    });
-}
+const totalWeight = config.totalWeight;
 
 function startSimulation(wickets, runsRequired, overs, weights) {
 
     let currentStrike = 0, currentPlayers = [];
     let index = 0;
     const allPlayer = [];
+    // create initial two batsmen
     currentPlayers[index] = new Player(playerNames[index], weights[playerNames[index]], index);
     index++;
     currentPlayers[index] = new Player(playerNames[index], weights[playerNames[index]], index);
-    // console.log(currentPlayers[index]);
     let runs, win = false, randomValue, balls = oversLeft * 6;
 
     while (wickets && balls) {
-
+        // prints match details before start of the over
         if (balls % 6 === 0) {
             console.log(`${overs} over(s) left. ${runsRequired} runs to win`)
             overs--;
         }
-
-        randomValue = Math.random() * total;
+        randomValue = Math.random() * totalWeight;
         runs = getRuns(currentPlayers[currentStrike].weights, randomValue);
         balls--;
         currentPlayers[currentStrike].ballsFaced += 1;
@@ -57,7 +45,9 @@ function startSimulation(wickets, runsRequired, overs, weights) {
             console.log(`${currentPlayers[currentStrike].name} got out`);
             wickets--;
             currentPlayers[currentStrike].notOut = false;
+            // add player's final stats to be printed in the end
             allPlayer[currentPlayers[currentStrike].index] = currentPlayers[currentStrike];
+            // create new batsman only if wickets left
             if (wickets) {
                 index++;
                 currentPlayers[currentStrike] = new Player(playerNames[index], weights[playerNames[index]], index);
@@ -70,15 +60,18 @@ function startSimulation(wickets, runsRequired, overs, weights) {
             win = true;
             break;
         }
-
+        // who will be facing the next ball
         currentStrike = getCurrentStrike(currentStrike, runs, balls);
 
     }
 
+    // add players who are not out to the final array
     currentPlayers.map(player => {
-        allPlayer[player.index] = player;
+        if (player.notOut) {
+            allPlayer[player.index] = player;
+        }
     });
-
+    // print result and details of each batsman
     printResult(win, wickets, runsRequired, balls, team, allPlayer);
 
 }

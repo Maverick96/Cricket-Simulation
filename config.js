@@ -130,5 +130,6 @@ module.exports = {
             value: -1
         }]
     },
-    teamName: 'Bengaluru'
+    teamName: 'Bengaluru',
+    totalWeight: 100
 };
